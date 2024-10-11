@@ -23,16 +23,10 @@ attributesCharts <- function(jaspResults, dataset, options) {
   D <- options[["defectiveOrDefect"]]
   timeStamp <- options$timeStamp
 
-  numeric_variables <- c(total, D)
-  numeric_variables  <- numeric_variables[numeric_variables != ""]
-
   # Data reading
-  if (is.null(dataset))
     if (!identical(timeStamp, "")) {
-      dataset <- .readDataSetToEnd(columns.as.numeric = numeric_variables, columns.as.factor = timeStamp)
       xLabs <- as.vector(dataset[, timeStamp])
     } else {
-      dataset <- .readDataSetToEnd(columns.as.numeric = numeric_variables)
       xLabs <- NULL
     }
 

@@ -36,9 +36,12 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
     dependent <- options[["dependentResponseSurface"]]
   }
 
-  dataset <- .doeAnalysisReadData(dataset, options, continuousPredictors, discretePredictors, blocks, covariates, dependent)
+  dataset <- na.omit(dataset)
 
-  if (length(blocks) > 0 && !identical(blocks, "")) # data reading function renames the block variable to "block"
+  if (length(blocks) > 0 && !identical(blocks, "")) # name of variable should always be "Block"
+    names(dataset)[names(dataset) == blocks] <- "Block"
+
+  if (length(blocks) > 0 && !identical(blocks, ""))
     blocks <- "Block"
 
   .doeAnalysisCheckErrors(dataset, options, continuousPredictors, discretePredictors, blocks, covariates, dependent, ready)
@@ -95,8 +98,7 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
   dataset <- .readDataSetToEnd(columns.as.numeric = numericVars, columns.as.factor = factorVars)
   dataset <- na.omit(dataset)
 
-  if (length(blocks) > 0 && !identical(blocks, "")) # name of variable should always be "Block"
-    names(dataset)[names(dataset) == blocks] <- "Block"
+
   return(dataset)
 }
 

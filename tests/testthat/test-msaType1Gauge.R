@@ -8,6 +8,7 @@ set.seed(1)
 
 options <- analysisOptions("msaType1Gauge")
 options$measurement <- "dm"
+options$measurement.types <- "scale"
 options$referenceValue <- -4
 options$toleranceRange <- 15
 options$histogram <- TRUE
@@ -51,6 +52,7 @@ test_that("1.5 Standard settings - t-test of observed bias against 0 table resul
 
 options <- analysisOptions("msaType1Gauge")
 options$measurement <- "dm"
+options$measurement.types <- "scale"
 options$referenceValue <- -4
 options$toleranceRange <- 15
 options$histogram <- TRUE
@@ -97,6 +99,7 @@ test_that("2.5 Alternative settings - t-test of observed bias against 0 table re
 
 options <- analysisOptions("msaType1Gauge")
 options$measurement <- "dmMissing1"
+options$measurement.types <- "scale"
 options$referenceValue <- -4
 options$toleranceRange <- 15
 options$histogram <- TRUE
@@ -140,6 +143,7 @@ test_that("3.5 Missing 1 value - t-test of observed bias against 0 table results
 
 options <- analysisOptions("msaType1Gauge")
 options$measurement <- "dmMissing25"
+options$measurement.types <- "scale"
 options$referenceValue <- -4
 options$toleranceRange <- 15
 options$histogram <- TRUE
@@ -183,6 +187,7 @@ test_that("4.5 Missing half values - t-test of observed bias against 0 table res
 
 options <- analysisOptions("msaType1Gauge")
 options$measurement <- "dmMissing49"
+options$measurement.types <- "scale"
 options$referenceValue <- -4
 options$toleranceRange <- 15
 options$histogram <- TRUE

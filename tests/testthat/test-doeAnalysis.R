@@ -10,6 +10,8 @@ context("[Quality Control] DoE Analysis")
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$fixedFactorsFactorial <- c("A", "B")
+options$dependentFactorial.types <- "scale"
+options$fixedFactorsFactorial.types <- "nominal"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -64,6 +66,8 @@ test_that("1.4 Two factors full factorial Model Summary table results match", {
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$fixedFactorsFactorial <- c("A", "B", "C", "D", "E")
+options$dependentFactorial.types <- "scale"
+options$fixedFactorsFactorial.types <- "nominal"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -175,6 +179,9 @@ options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$fixedFactorsFactorial <- c("A", "B", "C", "D", "E")
 options$covariates <- "Covariate"
+options$dependentFactorial.types <- "scale"
+options$fixedFactorsFactorial.types <- "nominal"
+options$covariates.types <- "scale"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -292,6 +299,8 @@ test_that("3.4 Five factors full factorial with covariates Model Summary table r
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$fixedFactorsFactorial <- c("A", "B", "C", "D", "E")
+options$dependentFactorial.types <- "scale"
+options$fixedFactorsFactorial.types <- "nominal"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -367,6 +376,8 @@ test_that("4.4 Five factors fractional factorial Model Summary table results mat
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$fixedFactorsFactorial <- c("A", "B", "C", "D", "E", "F", "G", "H", "J")
+options$dependentFactorial.types <- "scale"
+options$fixedFactorsFactorial.types <- "nominal"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -606,6 +617,8 @@ test_that("5.4 Nine factors highest factorial Model Summary table results match"
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$fixedFactorsFactorial <- c("A", "B", "C", "D", "E", "F", "G", "H", "J")
+options$dependentFactorial.types <- "scale"
+options$fixedFactorsFactorial.types <- "nominal"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -727,6 +740,8 @@ test_that("6.4 Nine factors smallest fractional Model Summary table results matc
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$continuousFactorsFactorial <- c("A", "B", "C")
+options$dependentFactorial.types <- "scale"
+options$continuousFactorsFactorial.types <- "scale"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -804,6 +819,8 @@ test_that("7.4 One center point Model Summary table results match", {
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$continuousFactorsFactorial <- c("A", "B", "C")
+options$dependentFactorial.types <- "scale"
+options$continuousFactorsFactorial.types <- "scale"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -880,6 +897,8 @@ test_that("8.4 Two center points Model Summary table results match", {
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$continuousFactorsFactorial <- c("A", "B", "C")
+options$dependentFactorial.types <- "scale"
+options$continuousFactorsFactorial.types <- "scale"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -957,6 +976,9 @@ options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$continuousFactorsFactorial <- c("A", "B", "C")
 options$blocksFactorial <- "Blocks"
+options$dependentFactorial.types <- "scale"
+options$continuousFactorsFactorial.types <- "scale"
+options$blocksFactorial.types <- "nominal"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -1076,6 +1098,8 @@ test_that("10.4 Two blocks Model Summary table results match", {
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$fixedFactorsFactorial <- c("AHTC", "B")
+options$dependentFactorial.types <- "scale"
+options$fixedFactorsFactorial.types <- "nominal"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -1130,6 +1154,8 @@ test_that("13.4 Two factor one HTC Model Summary table results match", {
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$fixedFactorsFactorial <- c("AHTC", "BHTC", "C", "D", "E")
+options$dependentFactorial.types <- "scale"
+options$fixedFactorsFactorial.types <- "nominal"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -1241,6 +1267,8 @@ test_that("14.4 Five factor two HTC Model Summary table results match", {
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$fixedFactorsFactorial <- c("AHTC", "BHTC", "CHTC", "D", "E", "F", "G")
+options$dependentFactorial.types <- "scale"
+options$fixedFactorsFactorial.types <- "nominal"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -1406,6 +1434,8 @@ test_that("15.4 Seven factor three HTC Model Summary table results match", {
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$fixedFactorsFactorial <- c("A", "B", "C")
+options$dependentFactorial.types <- "scale"
+options$fixedFactorsFactorial.types <- "nominal"
 options$codeFactors <- FALSE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -1504,6 +1534,8 @@ test_that("16.5 Three factors three levelsModel Summary table results match", {
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$fixedFactorsFactorial <- c("A", "B", "C")
+options$dependentFactorial.types <- "scale"
+options$fixedFactorsFactorial.types <- "nominal"
 options$codeFactors <- FALSE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -1614,6 +1646,8 @@ test_that("17.5 Three factors 2*three and 1*four levels Model Summary table resu
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$fixedFactorsFactorial <- c("A", "B", "C", "D")
+options$dependentFactorial.types <- "scale"
+options$fixedFactorsFactorial.types <- "nominal"
 options$codeFactors <- FALSE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -1832,6 +1866,8 @@ options <- analysisOptions("doeAnalysis")
 options$designType <- "responseSurfaceDesign"
 options$dependentResponseSurface <- "Result"
 options$continuousFactorsResponseSurface <- c("A", "B", "C")
+options$dependentResponseSurface.types <- "scale"
+options$continuousFactorsResponseSurface.types <- "scale"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "manual"
 options$codeFactorsManualTable <- list(
@@ -1914,6 +1950,8 @@ options <- analysisOptions("doeAnalysis")
 options$designType <- "responseSurfaceDesign"
 options$dependentResponseSurface <- "Result"
 options$continuousFactorsResponseSurface <- c("A", "B", "C", "D", "E")
+options$dependentResponseSurface.types <- "scale"
+options$continuousFactorsResponseSurface.types <- "scale"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "manual"
 options$codeFactorsManualTable <- list(
@@ -2034,6 +2072,9 @@ options$designType <- "responseSurfaceDesign"
 options$dependentResponseSurface <- "Result"
 options$continuousFactorsResponseSurface <- c("A", "B", "C")
 options$fixedFactorsResponseSurface <- c("D", "E")
+options$dependentResponseSurface.types <- "scale"
+options$continuousFactorsResponseSurface.types <- "scale"
+options$fixedFactorsResponseSurface.types <- "nominal"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "manual"
 options$codeFactorsManualTable <- list(
@@ -2147,6 +2188,9 @@ options$designType <- "responseSurfaceDesign"
 options$dependentResponseSurface <- "Result"
 options$continuousFactorsResponseSurface <- c("A", "B", "C", "D")
 options$fixedFactorsResponseSurface <- c("E")
+options$dependentResponseSurface.types <- "scale"
+options$continuousFactorsResponseSurface.types <- "scale"
+options$fixedFactorsResponseSurface.types <- "nominal"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "manual"
 options$codeFactorsManualTable <- list(
@@ -2262,6 +2306,8 @@ options <- analysisOptions("doeAnalysis")
 options$designType <- "responseSurfaceDesign"
 options$dependentResponseSurface <- "Result"
 options$continuousFactorsResponseSurface <- c("A", "B", "C")
+options$dependentResponseSurface.types <- "scale"
+options$continuousFactorsResponseSurface.types <- "scale"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "manual"
 options$codeFactorsManualTable <- list(
@@ -2341,6 +2387,8 @@ options <- analysisOptions("doeAnalysis")
 options$designType <- "responseSurfaceDesign"
 options$dependentResponseSurface <- "Result"
 options$continuousFactorsResponseSurface <- c("A", "B", "C", "D")
+options$dependentResponseSurface.types <- "scale"
+options$continuousFactorsResponseSurface.types <- "scale"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "manual"
 options$codeFactorsManualTable <- list(
@@ -2439,6 +2487,8 @@ options <- analysisOptions("doeAnalysis")
 options$designType <- "responseSurfaceDesign"
 options$dependentResponseSurface <- "Result"
 options$continuousFactorsResponseSurface <- c("A", "B", "C", "D", "E")
+options$dependentResponseSurface.types <- "scale"
+options$continuousFactorsResponseSurface.types <- "scale"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "manual"
 options$codeFactorsManualTable <- list(
@@ -2556,6 +2606,9 @@ options$designType <- "responseSurfaceDesign"
 options$dependentResponseSurface <- "Result"
 options$continuousFactorsResponseSurface <- c("A", "B", "C", "D", "E", "F")
 options$fixedFactorsResponseSurface <- c("G")
+options$dependentResponseSurface.types <- "scale"
+options$continuousFactorsResponseSurface.types <- "scale"
+options$fixedFactorsResponseSurface.types <- "nominal"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "manual"
 options$codeFactorsManualTable <- list(
@@ -2722,6 +2775,8 @@ test_that("26.4 Six continuous predictors one discrete predictor BBD Model Summa
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$fixedFactorsFactorial <- c("A", "B", "C", "D", "E")
+options$dependentFactorial.types <- "scale"
+options$fixedFactorsFactorial.types <- "nominal"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -2876,6 +2931,8 @@ options <- analysisOptions("doeAnalysis")
 options$designType <- "responseSurfaceDesign"
 options$dependentResponseSurface <- "Result"
 options$continuousFactorsResponseSurface <- c("A", "B", "C", "D", "E")
+options$dependentResponseSurface.types <- "scale"
+options$continuousFactorsResponseSurface.types <- "scale"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "manual"
 options$codeFactorsManualTable <- list(
@@ -2962,6 +3019,8 @@ options <- analysisOptions("doeAnalysis")
 options$designType <- "responseSurfaceDesign"
 options$dependentResponseSurface <- "Result"
 options$continuousFactorsResponseSurface <- c("A", "B", "C", "D", "E")
+options$dependentResponseSurface.types <- "scale"
+options$continuousFactorsResponseSurface.types <- "scale"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "manual"
 options$codeFactorsManualTable <- list(
@@ -3050,6 +3109,8 @@ options <- analysisOptions("doeAnalysis")
 options$designType <- "responseSurfaceDesign"
 options$dependentResponseSurface <- "Result"
 options$continuousFactorsResponseSurface <- c("A", "B", "C", "D")
+options$dependentResponseSurface.types <- "scale"
+options$continuousFactorsResponseSurface.types <- "scale"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "manual"
 options$codeFactorsManualTable <- list(
@@ -3129,6 +3190,8 @@ options <- analysisOptions("doeAnalysis")
 options$designType <- "responseSurfaceDesign"
 options$dependentResponseSurface <- "Result"
 options$continuousFactorsResponseSurface <- c("A", "B", "C", "D")
+options$dependentResponseSurface.types <- "scale"
+options$continuousFactorsResponseSurface.types <- "scale"
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "manual"
 options$codeFactorsManualTable <- list(
@@ -3206,6 +3269,8 @@ test_that("31.4 Uncoded Squared Terms Model Summary table results match", {
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
 options$fixedFactorsFactorial <- c("A", "B", "C")
+options$dependentFactorial.types <- "scale"
+options$fixedFactorsFactorial.types <- "nominal"
 options$codeFactors <- FALSE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -3284,6 +3349,9 @@ options$designType <- "responseSurfaceDesign"
 options$dependentResponseSurface <- "Result"
 options$continuousFactorsResponseSurface <- c("A", "B")
 options$fixedFactorsResponseSurface <- c("C", "D")
+options$dependentResponseSurface.types <- "scale"
+options$continuousFactorsResponseSurface.types <- "scale"
+options$fixedFactorsResponseSurface.types <- "nominal"
 options$codeFactors <- FALSE
 options$codeFactorsMethod <- "manual"
 options$codeFactorsManualTable <- list(

@@ -4,6 +4,7 @@ context("[Quality Control] Attributes Charts")
 # NP
 options <- analysisOptions("attributesCharts")
 options$defectiveOrDefect <- "D"
+options$defectiveOrDefect.types <- "scale"
 options$total <- "Size"
 options$attributesChart <- "defectives"
 options$attributesChartDefectivesChartType <- "npChart"

@@ -12,6 +12,7 @@ Description
 	website:			"https://github.com/jasp-stats/jaspQualityControl"
 	license:			"GPL (>= 2)"
 	icon:				"qualityControl-module.svg"
+	preloadData:		true
 
 	GroupTitle
 	{
