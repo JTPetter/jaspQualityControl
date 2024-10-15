@@ -33,17 +33,15 @@ msaTestRetest <- function(jaspResults, dataset, options, ...) {
   numeric.vars <- measurements
   numeric.vars <- numeric.vars[numeric.vars != ""]
   factor.vars <- factor.vars[factor.vars != ""]
+  exclude <- c(numeric.vars, factor.vars)
 
-  if (wideFormat){
+  if (wideFormat) {
     ready <- (length(measurements) > 1 && !identical(parts, ""))
-  }else{
+  } else {
     ready <- (!identical(measurements, "") && !identical(operators, "") && !identical(parts, ""))
   }
 
-  if (is.null(dataset)) {
-    dataset         <- .readDataSetToEnd(columns.as.numeric  = numeric.vars, columns.as.factor = factor.vars,
-                                         exclude.na.listwise = c(numeric.vars, factor.vars))
-  }
+  dataset <- jaspBase::excludeNaListwise(dataset, columns = exclude)
 
   .hasErrors(dataset, type = c('infinity', 'missingValues'),
              all.target = c(measurements, options[["operator"]], options[["part"]]),

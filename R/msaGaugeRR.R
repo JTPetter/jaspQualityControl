@@ -41,17 +41,19 @@ msaGaugeRR <- function(jaspResults, dataset, options, ...) {
   }
 
 
-  numeric.vars <- measurements
-  numeric.vars <- numeric.vars[numeric.vars != ""]
-  factor.vars <- c(parts, operators)
-  factor.vars <- factor.vars[factor.vars != ""]
+  # numeric.vars <- measurements
+  # numeric.vars <- numeric.vars[numeric.vars != ""]
+  # factor.vars <- c(parts, operators)
+  # factor.vars <- factor.vars[factor.vars != ""]
+  #
+  # if (is.null(dataset)) {
+  #   dataset         <- .readDataSetToEnd(columns.as.numeric  = numeric.vars, columns.as.factor = factor.vars)
+  #
+  # }
 
-  if (is.null(dataset)) {
-    dataset         <- .readDataSetToEnd(columns.as.numeric  = numeric.vars, columns.as.factor = factor.vars)
-    if (options$type3){
-      dataset$operators <- rep(1, nrow(dataset))
-      operators <- "operators"
-    }
+  if (options$type3){
+    dataset$operators <- rep(1, nrow(dataset))
+    operators <- "operators"
   }
 
   # Checking for infinity and missingValues

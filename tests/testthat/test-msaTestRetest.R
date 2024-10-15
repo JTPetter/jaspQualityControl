@@ -10,6 +10,9 @@ options$dataFormat <- "longFormat"
 options$partLongFormat <- "Part"
 options$measurementLongFormat <- "Measurement"
 options$operator <- "Repetition"
+options$partLongFormat.types <- "nominal"
+options$measurementLongFormat.types <- "scale"
+options$operator.types <- "nominal"
 options$manualProcessSd <- TRUE
 options$manualProcessSdValue <- 2
 options$tolerance <- TRUE
@@ -68,6 +71,8 @@ options <- analysisOptions("msaTestRetest")
 options$dataFormat <- "wideFormat"
 options$partWideFormat <- "Part"
 options$measurementsWideFormat <- c("Measurement1", "Measurement2")
+options$partWideFormat.types <- "nominal"
+options$measurementsWideFormat.types <- "scale"
 options$manualProcessSd <- TRUE
 options$manualProcessSdValue <- 2
 options$tolerance <- TRUE

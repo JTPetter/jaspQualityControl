@@ -8,6 +8,9 @@ options <- analysisOptions("msaGaugeRR")
 options$operatorLongFormat <- "Operators"
 options$partLongFormat <- "Parts"
 options$measurementLongFormat <- "Dm"
+options$operatorLongFormat.types <- "nominal"
+options$partLongFormat.types <- "nominal"
+options$measurementLongFormat.types <- "scale"
 options$tolerance <- TRUE
 options$toleranceValue <- 10
 options$rChart <- TRUE
