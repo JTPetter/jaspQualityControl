@@ -44,7 +44,6 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
 
   dataset <- .doeAnalysisReadData(dataset, options, continuousPredictors, discretePredictors, blocks, covariates, dependent)
 
-
   if (length(blocks) > 0 && !identical(blocks, "")) # data reading function renames the block variable to "block"
     blocks <- "Block"
 

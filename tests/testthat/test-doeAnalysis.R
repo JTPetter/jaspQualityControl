@@ -9,7 +9,7 @@ context("[Quality Control] DoE Analysis")
 
 options <- analysisOptions("doeAnalysis")
 options$dependentFactorial <- "Result"
-options$fixedFactorsFactorial <- c("A", "B")
+options$continuousFactorsFactorial <- c("A", "B")
 options$codeFactors <- TRUE
 options$codeFactorsMethod <- "automatic"
 options$tableEquation <- TRUE
@@ -21,6 +21,13 @@ options$modelTerms <- list(
   list(components = "B"),
   list(components = c("A", "B"))
 )
+options$responsesResponseOptimizer <- list(list("responseOptimizerGoal" = "maximize",
+                                                "responseOptimizerImportance" = 1,
+                                                "responseOptimizerLowerBound" = 0,
+                                                "responseOptimizerTarget" = 0.5,
+                                                "responseOptimizerUpperBound" = 1,
+                                                "responseOptimizerWeight" = 1,
+                                                "variable" = "Result"))
 set.seed(123)
 results <- runAnalysis("doeAnalysis", "datasets/doeAnalysis/2level2facFull.csv", options)
 
@@ -57,6 +64,30 @@ test_that("1.4 Two factors full factorial Model Summary table results match", {
   table <- results[["results"]][["Result"]][["collection"]][["Result_tableSummary"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list("", "", 1, ""))
+})
+
+test_that("1.5 Response Optimizer Summary Plot matches", {
+  plotName <- results[["results"]][["plotRo"]][["collection"]][["plotRo_plot"]][["data"]]
+  testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+  jaspTools::expect_equal_plots(testPlot, "summary-plot")
+})
+
+test_that("1.6 Optimization Plot Summary table results match", {
+  table <- results[["results"]][["plotRo"]][["collection"]][["plotRo_table"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(1, 1, 106.15, 1))
+})
+
+test_that("1.7 Response Optimizer Settings table results match", {
+  table <- results[["results"]][["tableRoSettings"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("Maximize", 1, 88.96761029, "Result", 106.1525287, "", 1))
+})
+
+test_that("1.8 Response Optimizer Solution table results match", {
+  table <- results[["results"]][["tableRoSolution"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(1, 1, 106.15, 1))
 })
 
 ### Five factors full factorial (verified with Minitab) ####
