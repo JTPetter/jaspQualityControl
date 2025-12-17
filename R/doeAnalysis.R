@@ -147,7 +147,12 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
       contrasts(dataset[[blocks]]) <- "contr.sum"
 
     # Transform to coded, -1 to 1 coding.
-    allVars <- c(unlist(continuousPredictors), unlist(discretePredictors))
+    # Discrete predictors should only be included in the coding when asked for coded results (options[["codeFactors"]]) or when analyzing a factorial design.
+    if (options[["designType"]] == "factorialDesign" || options[["codeFactors"]]) {
+      allVars <- c(unlist(continuousPredictors), unlist(discretePredictors))
+    } else {
+      allVars <- unlist(continuousPredictors)
+    }
     allVars <- allVars[allVars != ""]
     datasetCoded <- dataset
     if (options[["codeFactorsMethod"]] == "manual")
@@ -306,7 +311,8 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
       resultCoded[["regression"]][["predrsq"]] <- .pred_r_squared(regressionFitCoded)
 
       ssType <- options[["sumOfSquaresType"]]
-      anovaFitData <- if (options[["squaredTermsCoded"]]) regressionFitCoded else regressionFit
+      squaredTermsPresent <- options[["designType"]] == "responseSurfaceDesign" && (length(unlist(options[["squaredTerms"]])) > 0 || options[["rsmPredefinedTerms"]] == "linearAndSquared" || options[["rsmPredefinedTerms"]] == "fullQuadratic")
+      anovaFitData <- if (options[["squaredTermsCoded"]] && squaredTermsPresent) regressionFitCoded else regressionFit
       if (ssType == "type1") {
         anovaFit <- anova(anovaFitData)
       } else if (ssType == "type2") {
@@ -330,7 +336,8 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
       resultCoded[["regression"]][["adjrsq"]] <- NA
       resultCoded[["regression"]][["predrsq"]] <- NA
 
-      anovaFitData <- if (options[["squaredTermsCoded"]]) regressionFitCoded else regressionFit
+      squaredTermsPresent <- options[["designType"]] == "responseSurfaceDesign" && (length(unlist(options[["squaredTerms"]])) > 0 || options[["rsmPredefinedTerms"]] == "linearAndSquared" || options[["rsmPredefinedTerms"]] == "fullQuadratic")
+      anovaFitData <- if (options[["squaredTermsCoded"]] && squaredTermsPresent) regressionFitCoded else regressionFit
       anovaFit <- summary(aov(anovaFitData))[[1]]
       errorRow <- data.frame(Df = 0, SS = 0, MS = 0) # add an error row to keep the format consistent
       colnames(errorRow) <- colnames(anovaFit)

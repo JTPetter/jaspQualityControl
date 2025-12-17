@@ -214,7 +214,7 @@ Form
 			CheckBox
 			{
 				name:								"codeFactors"
-				checked:							true
+				checked:							false
 				label:								qsTr("Display results in coded units")
 			}
 		}
@@ -677,7 +677,7 @@ Form
 			name:							"sumOfSquaresType"
 			label:							qsTr("Sum of squares type")
 			id: 							sumOfSquaresType
-			indexDefaultValue:				(designType.currentValue == "factorialDesign" && continuousFactorsFactorial.count > 0) ? 1 : 2
+			indexDefaultValue:				2
 			values: [
 				{ label: qsTr("Type I"), value: "type1"},
 				{ label: qsTr("Type II"), value: "type2"},
@@ -689,6 +689,7 @@ Form
 			{
 				name:						"squaredTermsCoded"
 				label:						qsTr("Use coded data to calculate squared terms")
+				checked:					designType.currentValue == "responseSurfaceDesign"
 				visible:					designType.currentValue == "responseSurfaceDesign"
 			}
 	}

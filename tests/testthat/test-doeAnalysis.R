@@ -1,9 +1,9 @@
 context("[Quality Control] DoE Analysis")
 .numDecimals <- 2
 
-# Basic tests
+# Basic tests ####
 
-## Factorial designs
+## Factorial designs ####
 
 ### Two factors full factorial (verified with Minitab) ####
 
