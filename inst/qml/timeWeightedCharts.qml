@@ -293,6 +293,28 @@ Form
 					defaultValue:					3
 					fieldWidth: 					50
 				}
+
+				DropDown
+				{
+					name:							"exponentiallyWeightedMovingAverageChartMeanSource"
+					label:							qsTr("In-control mean")
+					id:								exponentiallyWeightedMovingAverageChartMeanSource
+					indexDefaultValue:				0
+					values: [
+						{ label: qsTr("Estimated from data"), value: "data"},
+						{ label: qsTr("Historical"), value: "historical"}
+					]
+				}
+
+				DoubleField
+				{
+					name:						"exponentiallyWeightedMovingAverageChartMeanValue"
+					label:						qsTr("Mean value")
+					visible:					exponentiallyWeightedMovingAverageChartMeanSource.currentValue == "historical"
+					defaultValue:				0
+					negativeValues:				true
+					fieldWidth:					50
+				}
 				
 				IntegerField
 				{

@@ -259,6 +259,88 @@ test_that("LF5.4 Test of Exponentially weighted moving average chart with histor
                                  list("No test violations occurred."))
 })
 
+#### EWMA historical mean ####
+options <- analysisOptions("timeWeightedCharts")
+options$measurementLongFormat <- "Measurement"
+options$subgroupSizeType <- "manual"
+options$manualSubgroupSizeValue <- 5
+options$cumulativeSumChart <- FALSE
+options$exponentiallyWeightedMovingAverageChart <- TRUE
+options$exponentiallyWeightedMovingAverageChartSdSource <- "data"
+options$exponentiallyWeightedMovingAverageChartSdMethod <- "s"
+options$exponentiallyWeightedMovingAverageChartMeanSource <- "historical"
+options$exponentiallyWeightedMovingAverageChartMeanValue <- 0
+results <- runAnalysis("timeWeightedCharts", "datasets/timeWeightedCharts/ewmaChartLong.csv", options)
+
+test_that("LF5.5 Test of Exponentially weighted moving average chart with historical mean", {
+  plotName <- results[["results"]][["EWMAPlot"]][["collection"]][["EWMAPlot_plot"]][["data"]]
+  testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+  jaspTools::expect_equal_plots(testPlot, "exponentially-weighted-moving-average-chartLF5_5")
+})
+
+test_that("LF5.6 Test of Exponentially weighted moving average chart with historical mean table", {
+  table <- results[["results"]][["EWMAPlot"]][["collection"]][["EWMAPlot_table"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("Point 1", "Point 2", "Point 3", "Point 4", "Point 5", "Point 6",
+                                      "Point 7"))
+})
+
+#### EWMA historical mean and std. dev. ####
+options <- analysisOptions("timeWeightedCharts")
+options$measurementLongFormat <- "Measurement"
+options$subgroupSizeType <- "manual"
+options$manualSubgroupSizeValue <- 5
+options$cumulativeSumChart <- FALSE
+options$exponentiallyWeightedMovingAverageChart <- TRUE
+options$exponentiallyWeightedMovingAverageChartSdSource <- "historical"
+options$exponentiallyWeightedMovingAverageChartSdValue <- 3
+options$exponentiallyWeightedMovingAverageChartMeanSource <- "historical"
+options$exponentiallyWeightedMovingAverageChartMeanValue <- 0
+results <- runAnalysis("timeWeightedCharts", "datasets/timeWeightedCharts/ewmaChartLong.csv", options)
+
+test_that("LF5.7 Test of Exponentially weighted moving average chart with historical mean and std. dev.", {
+  plotName <- results[["results"]][["EWMAPlot"]][["collection"]][["EWMAPlot_plot"]][["data"]]
+  testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+  jaspTools::expect_equal_plots(testPlot, "exponentially-weighted-moving-average-chartLF5_7")
+})
+
+test_that("LF5.8 Test of Exponentially weighted moving average chart with historical mean and std. dev. table", {
+  table <- results[["results"]][["EWMAPlot"]][["collection"]][["EWMAPlot_table"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("Point 1", "Point 2", "Point 3", "Point 4", "Point 5", "Point 6",
+                                      "Point 7"))
+})
+
+#### EWMA historical mean (individuals) ####
+options <- analysisOptions("timeWeightedCharts")
+options$measurementLongFormat <- "Measurement"
+options$subgroupSizeType <- "individual"
+options$cumulativeSumChart <- FALSE
+options$exponentiallyWeightedMovingAverageChart <- TRUE
+options$exponentiallyWeightedMovingAverageChartSdSource <- "data"
+options$exponentiallyWeightedMovingAverageChartSdMethod <- "s"
+options$exponentiallyWeightedMovingAverageChartMeanSource <- "historical"
+options$exponentiallyWeightedMovingAverageChartMeanValue <- 0
+results <- runAnalysis("timeWeightedCharts", "datasets/timeWeightedCharts/ewmaChartLong.csv", options)
+
+test_that("LF5.9 Test of Exponentially weighted moving average chart with historical mean (individuals)", {
+  plotName <- results[["results"]][["EWMAPlot"]][["collection"]][["EWMAPlot_plot"]][["data"]]
+  testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+  jaspTools::expect_equal_plots(testPlot, "exponentially-weighted-moving-average-chartLF5_9")
+})
+
+test_that("LF5.10 Test of Exponentially weighted moving average chart with historical mean (individuals) table", {
+  table <- results[["results"]][["EWMAPlot"]][["collection"]][["EWMAPlot_table"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("Point 1", "Point 2", "Point 3", "Point 4", "Point 5", "Point 6",
+                                      "Point 7", "Point 8", "Point 9", "Point 10", "Point 11", "Point 12",
+                                      "Point 13", "Point 14", "Point 15", "Point 16", "Point 17",
+                                      "Point 18", "Point 19", "Point 20", "Point 21", "Point 22",
+                                      "Point 23", "Point 24", "Point 25", "Point 26", "Point 27",
+                                      "Point 28", "Point 29", "Point 30", "Point 31", "Point 32",
+                                      "Point 33", "Point 34", "Point 35"))
+})
+
 ### Alternative SD Estimation ####
 
 #### CUSUM (verified with Minitab) ####

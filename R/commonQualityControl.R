@@ -905,8 +905,10 @@ KnownControlStats.RS <- function(N, sigma = 3) {
       } else {
         sigma <- .sdXbar(dataCurrentStage, type = xBarSdType, unbiasingConstantUsed = unbiasingConstantUsed)
       }
-      plotStatistic <- .ewmaPlotStatistic(data = dataCurrentStage, lambda = ewmaLambda)
-      center <- mean(unlist(dataCurrentStage), na.rm = TRUE)
+      overallMean <- mean(unlist(dataCurrentStage), na.rm = TRUE)
+      initialPoint <- if (!identical(phase2Mu, "")) as.numeric(phase2Mu) else overallMean
+      plotStatistic <- .ewmaPlotStatistic(data = dataCurrentStage, lambda = ewmaLambda, initialPoint = initialPoint)
+      center <- if (!identical(phase2Mu, "")) as.numeric(phase2Mu) else mean(unlist(dataCurrentStage), na.rm = TRUE)
       individualPointSigmas <- .ewmaPointSigmas(n = n, sigma = sigma, lambda = ewmaLambda)
       UCL <- center + individualPointSigmas * nSigmasControlLimits
       LCL <- center - individualPointSigmas * nSigmasControlLimits
@@ -1317,9 +1319,8 @@ KnownControlStats.RS <- function(N, sigma = 3) {
   return(cuSumPoints)
 }
 
-.ewmaPlotStatistic <- function(data, lambda) {
+.ewmaPlotStatistic <- function(data, lambda, initialPoint) {
   ewmaPoints <- c()
-  initialPoint <- mean(unlist(data), na.rm = TRUE)
   rowMeanVector <- if (ncol(data) == 1) unlist(data) else rowMeans(data, na.rm = TRUE)
   for (i in seq(1, nrow(data))) {
     previousPoint <- if (i == 1) initialPoint else ewmaPoints[i - 1]

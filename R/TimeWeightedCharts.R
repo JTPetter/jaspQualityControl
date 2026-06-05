@@ -124,6 +124,7 @@ timeWeightedCharts <- function(jaspResults, dataset, options) {
                                        "exponentiallyWeightedMovingAverageChart", "exponentiallyWeightedMovingAverageChartSigmaControlLimits",
                                        "exponentiallyWeightedMovingAverageChartLambda", "exponentiallyWeightedMovingAverageChartSdSource",
                                        "exponentiallyWeightedMovingAverageChartSdMethod", "exponentiallyWeightedMovingAverageChartSdValue",
+                                       "exponentiallyWeightedMovingAverageChartMeanSource", "exponentiallyWeightedMovingAverageChartMeanValue",
                                        "exponentiallyWeightedMovingAverageChartMovingRangeLength", "report", "reportMetaData",
                                        "reportTitle", "reportTitleText", "reportChartName", "reportChartNameText", "reportSubtitle",
                                        "reportSubtitleText", "reportMeasurementName", "reportMeasurementNameText", "reportFootnote",
@@ -218,7 +219,8 @@ timeWeightedCharts <- function(jaspResults, dataset, options) {
                   "groupingVariableMethod", "exponentiallyWeightedMovingAverageChart",
                   "exponentiallyWeightedMovingAverageChartSigmaControlLimits", "exponentiallyWeightedMovingAverageChartLambda",
                   "exponentiallyWeightedMovingAverageChartSdSource", "exponentiallyWeightedMovingAverageChartSdMethod",
-                  "exponentiallyWeightedMovingAverageChartSdValue", "exponentiallyWeightedMovingAverageChartMovingRangeLength",
+                  "exponentiallyWeightedMovingAverageChartSdValue", "exponentiallyWeightedMovingAverageChartMeanSource",
+                  "exponentiallyWeightedMovingAverageChartMeanValue", "exponentiallyWeightedMovingAverageChartMovingRangeLength",
                   "report", .getDependenciesControlChartRules()))
 
   if (!ready)
@@ -231,6 +233,8 @@ timeWeightedCharts <- function(jaspResults, dataset, options) {
                              nSigmasControlLimits = options[["exponentiallyWeightedMovingAverageChartSigmaControlLimits"]],
                              xAxisLabels = axisLabels, movingRangeLength = options[["exponentiallyWeightedMovingAverageChartMovingRangeLength"]],
                              ewmaLambda = options[["exponentiallyWeightedMovingAverageChartLambda"]], phase2 = phase2,
+                             phase2Mu = if (options[["exponentiallyWeightedMovingAverageChartMeanSource"]] == "historical")
+                               options[["exponentiallyWeightedMovingAverageChartMeanValue"]] else "",
                              phase2Sd = options[["exponentiallyWeightedMovingAverageChartSdValue"]], tableLabels = axisLabels,
                              ruleList = ruleList)
   plotObject <- ewmaChart$plotObject
@@ -240,7 +244,8 @@ timeWeightedCharts <- function(jaspResults, dataset, options) {
                   "groupingVariableMethod", "exponentiallyWeightedMovingAverageChart",
                   "exponentiallyWeightedMovingAverageChartSigmaControlLimits", "exponentiallyWeightedMovingAverageChartLambda",
                   "exponentiallyWeightedMovingAverageChartSdSource", "exponentiallyWeightedMovingAverageChartSdMethod",
-                  "exponentiallyWeightedMovingAverageChartSdValue", "exponentiallyWeightedMovingAverageChartMovingRangeLength",
+                  "exponentiallyWeightedMovingAverageChartSdValue", "exponentiallyWeightedMovingAverageChartMeanSource",
+                  "exponentiallyWeightedMovingAverageChartMeanValue", "exponentiallyWeightedMovingAverageChartMovingRangeLength",
                   "report", .getDependenciesControlChartRules()))
   plot$plotObject <- plotObject
   return(list("plot" = plot, "table" = table))
