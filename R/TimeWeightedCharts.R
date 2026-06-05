@@ -200,6 +200,12 @@ timeWeightedCharts <- function(jaspResults, dataset, options) {
                               movingRangeLength = options[["cumulativeSumChartAverageMovingRangeLength"]], phase2 = phase2,
                               phase2Sd = options[["cumulativeSumChartSdValue"]], tableLabels = axisLabels, ruleList = ruleList)
   table <- cusumChart$table
+  table$dependOn(c("dataFormat", "measurementLongFormat", "subgroup", "stagesLongFormat", "measurementsWideFormat",
+                  "axisLabels", "stagesWideFormat", "subgroupSizeType", "manualSubgroupSizeValue",
+                  "groupingVariableMethod", "cumulativeSumChart", "cumulativeSumChartNumberSd",
+                  "cumulativeSumChartShiftSize", "cumulativeSumChartTarget", "cumulativeSumChartSdSource",
+                  "cumulativeSumChartSdMethod", "cumulativeSumChartSdValue", "cumulativeSumChartAverageMovingRangeLength",
+                  "report", .getDependenciesControlChartRules()))
   plot$plotObject <- cusumChart$plotObject
   return(list("plot" = plot, "table" = table))
 }
@@ -229,6 +235,13 @@ timeWeightedCharts <- function(jaspResults, dataset, options) {
                              ruleList = ruleList)
   plotObject <- ewmaChart$plotObject
   table <- ewmaChart$table
+  table$dependOn(c("dataFormat", "measurementLongFormat", "subgroup", "stagesLongFormat", "measurementsWideFormat",
+                  "axisLabels", "stagesWideFormat", "subgroupSizeType", "manualSubgroupSizeValue",
+                  "groupingVariableMethod", "exponentiallyWeightedMovingAverageChart",
+                  "exponentiallyWeightedMovingAverageChartSigmaControlLimits", "exponentiallyWeightedMovingAverageChartLambda",
+                  "exponentiallyWeightedMovingAverageChartSdSource", "exponentiallyWeightedMovingAverageChartSdMethod",
+                  "exponentiallyWeightedMovingAverageChartSdValue", "exponentiallyWeightedMovingAverageChartMovingRangeLength",
+                  "report", .getDependenciesControlChartRules()))
   plot$plotObject <- plotObject
   return(list("plot" = plot, "table" = table))
 }
