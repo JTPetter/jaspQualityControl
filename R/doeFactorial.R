@@ -419,6 +419,7 @@ doeFactorial <- function(jaspResults, dataset, options, ...) {
   }
   if (twoLevelDesign) {
     display <- .doeFactorialAddCenterPoints(options, display)
+    display <- .doeFactorialAddPointType(display, df)
   }
   display <- .doeFactorialAddRandomRepeats(options, display)
   display <- .doeFactorialSetDisplayOrder(options, display)
@@ -449,6 +450,19 @@ doeFactorial <- function(jaspResults, dataset, options, ...) {
   } else {
     display[, indices] <- sapply(display[, indices], as.numeric) * 2 - 3
   }
+  return(display)
+}
+
+.doeFactorialAddPointType <- function(display, df) {
+  # PtType: 1 = factorial/corner point, 0 = center point (all coded factors == 0)
+  factorCols <- which(colnames(display) %in% df[["name"]])
+  ptType     <- as.integer(rowSums(display[, factorCols, drop = FALSE] != 0) > 0)
+  if (!any(ptType == 0)) # no center points present -> no column
+    return(display)
+  # insert PtType right after the standard-order column (col 2)
+  display <- cbind(display[, 1:2, drop = FALSE],
+                   PtType = ptType,
+                   display[, -(1:2), drop = FALSE])
   return(display)
 }
 
@@ -525,6 +539,8 @@ doeFactorial <- function(jaspResults, dataset, options, ...) {
   tb <- createJaspTable(title = gettext("Factorial Design"), position = 3L)
   tb$addColumnInfo(name = "ro", title = gettext("Run Order"), type = "integer")
   tb$addColumnInfo(name = "sro", title = gettext("Standard Order"), type = "integer")
+  if ("PtType" %in% colnames(design[["display"]]))
+    tb$addColumnInfo(name = "PtType", title = gettext("Point type"), type = "integer")
   for (i in 1:options[["numberOfCategorical"]]) {
     tb$addColumnInfo(name = df[["name"]][i], title = df[["name"]][i], type = "string")
   }
