@@ -148,6 +148,7 @@ doeResponseSurfaceMethodology <- function(jaspResults, dataset, options, ...) {
 
   tb$addColumnInfo(name = "run.order", title = gettext("Run order"),      type = "integer")
   tb$addColumnInfo(name = "std.order", title = gettext("Standard order"), type = "integer")
+  tb$addColumnInfo(name = "PtType",    title = gettext("Point type"),     type = "integer")
 
   for (i in seq_len(options[["numberOfContinuous"]]))
     tb$addColumnInfo(name = paste0("x", i), title = options[["continuousVariables"]][[1L]][["values"]][i],     type = "number", overtitle = gettext("Continuous factors"))
@@ -199,6 +200,13 @@ doeResponseSurfaceMethodology <- function(jaspResults, dataset, options, ...) {
       randomize            = FALSE
     )
   }
+
+  # classify point type on the coded continuous factors (cols 3:(2+k)), before decoding.
+  # appended (not inserted) so decode's positional i+2 indexing and the categorical
+  # rename of the trailing columns stay correct; carried through reorder/replicate/decode.
+  k <- options[["numberOfContinuous"]]
+  design[["PtType"]] <- .doeClassifyPointTypeRsm(design[, 3:(2 + k), drop = FALSE],
+                                                 runLabels = design[["std.order"]])
 
   # fix run.order and std.order
   if (options[["setSeed"]]) {

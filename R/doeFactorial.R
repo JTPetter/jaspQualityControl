@@ -18,6 +18,11 @@
 #' @export
 doeFactorial <- function(jaspResults, dataset, options, ...) {
 
+  # 'repetitions' UI control is currently commented out in the QML; default to 0 so the
+  # summary table and design generation don't receive NULL (see doeFactorial.qml).
+  if (is.null(options[["repetitions"]]))
+    options[["repetitions"]] <- 0L
+
   selectedRow <- options[["selectedRow"]]
   maximumRow <- .getMaximumRow(options)
 
@@ -456,14 +461,60 @@ doeFactorial <- function(jaspResults, dataset, options, ...) {
 .doeFactorialAddPointType <- function(display, df) {
   # PtType: 1 = factorial/corner point, 0 = center point (all coded factors == 0)
   factorCols <- which(colnames(display) %in% df[["name"]])
-  ptType     <- as.integer(rowSums(display[, factorCols, drop = FALSE] != 0) > 0)
+  ptType     <- .doeClassifyPointTypeFactorial(display[, factorCols, drop = FALSE])
   if (!any(ptType == 0)) # no center points present -> no column
     return(display)
   # insert PtType right after the standard-order column (col 2)
-  display <- cbind(display[, 1:2, drop = FALSE],
-                   PtType = ptType,
-                   display[, -(1:2), drop = FALSE])
-  return(display)
+  return(.doeInsertPointTypeColumn(display, ptType, afterCol = 2L, colName = "PtType"))
+}
+
+# 1 = factorial/corner point, 0 = center point (all coded factors == 0)
+.doeClassifyPointTypeFactorial <- function(mat) {
+  as.integer(rowSums(mat != 0) > 0)
+}
+
+# RSM point-type classification in CODED units (0 at center, +-1 cube, +-alpha axial).
+# Returns integer vector in {-1, 0, 1, 2, NA}, row order preserved:
+#   0 = center, 1 = cube/corner, -1 = axial/star, 2 = edge midpoint (Box-Behnken), NA = unknown
+# tol applied to every comparison (alpha is irrational, never test equality exactly).
+.doeClassifyPointTypeRsm <- function(mat, tol = 1e-8, runLabels = NULL) {
+  mat <- as.matrix(mat)
+  n   <- nrow(mat)
+  k   <- ncol(mat)
+  if (is.null(runLabels))
+    runLabels <- seq_len(n)
+
+  ptType <- rep(NA_integer_, n)
+  for (i in seq_len(n)) {
+    x      <- mat[i, ]
+    isZero <- abs(x) < tol
+    isUnit <- abs(abs(x) - 1) < tol
+    nz     <- sum(!isZero)
+
+    if (nz == 0L) {
+      ptType[i] <- 0L                                          # center
+    } else if (nz == 1L) {
+      ptType[i] <- -1L                                         # axial (also face-centered, alpha == 1)
+    } else if (nz == k && all(isUnit)) {
+      ptType[i] <- 1L                                          # cube / corner (incl. 2-factor (+-1, +-1))
+    } else if (nz == 2L && k >= 3L && all(isUnit[!isZero])) {
+      ptType[i] <- 2L                                          # edge midpoint (Box-Behnken)
+    } else {
+      ptType[i] <- NA_integer_
+      warning(gettextf("Run %s has an unrecognized point-type geometry and was labeled NA.",
+                       as.character(runLabels[i])), domain = NA)
+    }
+  }
+  return(ptType)
+}
+
+# insert a point-type vector as a named column right after column `afterCol`
+.doeInsertPointTypeColumn <- function(df, ptType, afterCol = 2L, colName = "PtType") {
+  out <- cbind(df[, seq_len(afterCol), drop = FALSE],
+               ptType,
+               df[, -seq_len(afterCol), drop = FALSE])
+  colnames(out)[afterCol + 1L] <- colName
+  return(out)
 }
 
 .doeFactorialAddRandomRepeats <- function(options, display) {
