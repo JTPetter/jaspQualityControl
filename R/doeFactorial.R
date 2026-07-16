@@ -495,10 +495,10 @@ doeFactorial <- function(jaspResults, dataset, options, ...) {
       ptType[i] <- 0L                                          # center
     } else if (nz == 1L) {
       ptType[i] <- -1L                                         # axial (also face-centered, alpha == 1)
-    } else if (nz == k && all(isUnit)) {
-      ptType[i] <- 1L                                          # cube / corner (incl. 2-factor (+-1, +-1))
-    } else if (nz == 2L && k >= 3L && all(isUnit[!isZero])) {
-      ptType[i] <- 2L                                          # edge midpoint (Box-Behnken)
+    } else if (all(isUnit[!isZero])) {
+      # 2+ factors at +-1: full-factorial corner if ALL factors active, else Box-Behnken
+      # subset point (nz can be 2 for k=3-5, 3 for k=6-7, etc.)
+      ptType[i] <- if (nz == k) 1L else 2L                     # cube/corner vs Box-Behnken point
     } else {
       ptType[i] <- NA_integer_
       warning(gettextf("Run %s has an unrecognized point-type geometry and was labeled NA.",

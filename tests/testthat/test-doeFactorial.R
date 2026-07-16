@@ -337,9 +337,9 @@ results <- runAnalysis("doeFactorial", "debug.csv", options)
 test_that("6.1 One Center Point Factorial Design table results match", {
   table <- results[["results"]][["displayDesign"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0, 0, 0, 9, 0, -1, -1, -1, 5, 1, 1, -1, -1, 7, 2, -1, 1, -1, 1,
-                                      3, 1, 1, -1, 3, 4, -1, -1, 1, 4, 5, 1, -1, 1, 8, 6, -1, 1, 1,
-                                      6, 7, 1, 1, 1, 2, 8))
+                                 list(0, 0, 0, 0, 9, 0, -1, -1, -1, 1, 5, 1, 1, -1, -1, 1, 7, 2, -1,
+                                      1, -1, 1, 1, 3, 1, 1, -1, 1, 3, 4, -1, -1, 1, 1, 4, 5, 1, -1,
+                                      1, 1, 8, 6, -1, 1, 1, 1, 6, 7, 1, 1, 1, 1, 2, 8))
 })
 
 test_that("6.2 One Center Point Design Summary table results match", {
@@ -374,9 +374,10 @@ results <- runAnalysis("doeFactorial", "debug.csv", options)
 test_that("7.1 Two Center Point Factorial Design table results match", {
   table <- results[["results"]][["displayDesign"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0, 0, 0, 1, 1, 0, 0, 0, 10, 1, -1, -1, -1, 6, 2, 1, -1, -1, 8,
-                                      3, -1, 1, -1, 2, 4, 1, 1, -1, 4, 5, -1, -1, 1, 5, 6, 1, -1,
-                                      1, 9, 7, -1, 1, 1, 7, 8, 1, 1, 1, 3, 9))
+                                 list(0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 10, 1, -1, -1, -1, 1, 6, 2, 1, -1,
+                                      -1, 1, 8, 3, -1, 1, -1, 1, 2, 4, 1, 1, -1, 1, 4, 5, -1, -1,
+                                      1, 1, 5, 6, 1, -1, 1, 1, 9, 7, -1, 1, 1, 1, 7, 8, 1, 1, 1, 1,
+                                      3, 9))
 })
 
 test_that("7.2 Two Center Point Design Summary table results match", {
@@ -411,10 +412,10 @@ results <- runAnalysis("doeFactorial", "debug.csv", options)
 test_that("8.1 Four Center Point Factorial Design table results match", {
   table <- results[["results"]][["displayDesign"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0, 0, 0, 1, 1, 0, 0, 0, 2, 1, 0, 0, 0, 7, 1, 0, 0, 0, 12, 1, -1,
-                                      -1, -1, 8, 2, 1, -1, -1, 10, 3, -1, 1, -1, 3, 4, 1, 1, -1, 5,
-                                      5, -1, -1, 1, 6, 6, 1, -1, 1, 11, 7, -1, 1, 1, 9, 8, 1, 1, 1,
-                                      4, 9))
+                                 list(0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 7, 1, 0, 0, 0,
+                                      0, 12, 1, -1, -1, -1, 1, 8, 2, 1, -1, -1, 1, 10, 3, -1, 1, -1,
+                                      1, 3, 4, 1, 1, -1, 1, 5, 5, -1, -1, 1, 1, 6, 6, 1, -1, 1, 1,
+                                      11, 7, -1, 1, 1, 1, 9, 8, 1, 1, 1, 1, 4, 9))
 })
 
 test_that("8.2 Four Center Point Design Summary table results match", {
