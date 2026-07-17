@@ -76,7 +76,7 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
     discretePredictors <- options[["fixedFactorsFactorial"]]
     continuousPredictors <- options[["continuousFactorsFactorial"]]
     covariates <- options[["covariates"]]
-    blocks <- options[["blocksFactorial"]]
+    blocks <- unlist(options[["blocksFactorial"]])
     dependent <- options[["dependentFactorial"]]
     stepwiseMethod <- options[["stepwiseMethodFactorial"]]
   } else if (options[["designType"]] == "responseSurfaceDesign") {
@@ -84,7 +84,7 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
     discretePredictors <- options[["fixedFactorsResponseSurface"]]
     continuousPredictors <- options[["continuousFactorsResponseSurface"]]
     covariates <- NULL
-    blocks <- options[["blocksResponseSurface"]]
+    blocks <- unlist(options[["blocksResponseSurface"]])
     dependent <- options[["dependentResponseSurface"]]
     stepwiseMethod <- options[["stepwiseMethodResponseSurface"]]
   }
@@ -96,10 +96,6 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
   }
 
   dataset <- .doeAnalysisReadData(dataset, options, continuousPredictors, discretePredictors, blocks, covariates, dependent)
-
-
-  if (length(blocks) > 0 && !identical(blocks, "")) # data reading function renames the block variable to "block"
-    blocks <- "Block"
 
   .doeAnalysisCheckErrors(dataset, options, continuousPredictors, discretePredictors, blocks, covariates, dependent, ready)
 
@@ -159,13 +155,11 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
     factorVars <- c(factorVars, unlist(discretePredictors))
   }
   if (length(blocks) > 0 && !identical(blocks, "")) {
-    factorVars <- c(factorVars, blocks)
+    factorVars <- c(factorVars, unlist(blocks))
   }
   dataset <- .readDataSetToEnd(columns.as.numeric = numericVars, columns.as.factor = factorVars)
   dataset <- na.omit(dataset)
 
-  if (length(blocks) > 0 && !identical(blocks, "")) # name of variable should always be "Block"
-    names(dataset)[names(dataset) == blocks] <- "Block"
   return(dataset)
 }
 
@@ -200,8 +194,10 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
     for (fac in unlist(discretePredictors)) {
       contrasts(dataset[[fac]]) <- "contr.sum"
     }
-    if (length(blocks) > 0 && !identical(blocks, ""))
-      contrasts(dataset[[blocks]]) <- "contr.sum"
+    if (length(blocks) > 0 && !identical(blocks, "")) {
+      for (blockVar in blocks[blocks != ""])
+        contrasts(dataset[[blockVar]]) <- "contr.sum"
+    }
 
     # Transform to coded, -1 to 1 coding.
     allVars <- c(unlist(continuousPredictors), unlist(discretePredictors))
@@ -301,8 +297,8 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
                               "fullQuadratic" = paste0(currentDependent, " ~ ", secondOrderInteractionEffects, numPredStringSquaredEffects, catPredString)
       )
     }
-    if (length(blocks) > 0 && !identical(blocks, ""))
-      formulaString <- paste0(formulaString, " + ", blocks)
+    if (length(blocks) > 0 && !identical(blocks, "")) # added as main effects only, never in interactions
+      formulaString <- paste0(formulaString, paste0(" + ", blocks, collapse = ""))
     if (length(covariates) > 0 && !identical(covariates, "")) {
       covariateString <- paste0(" + ", unlist(covariates), collapse = "")
       formulaString <- paste0(formulaString, covariateString)
@@ -477,7 +473,7 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
 
       anovaFit[["Mean Sq"]] <- anovaFit[["Sum Sq"]] / anovaFit[["Df"]]
       anovaFit <- anovaFit[c("Df", "Sum Sq", "Mean Sq", "F value", "Pr(>F)")] # rearrange, so it has the same order as the aov function
-      anovaFit <- .addModelHeaderTerms(anovaFit, unlist(covariates))
+      anovaFit <- .addModelHeaderTerms(anovaFit, unlist(covariates), blocks)
     } else {
       result[["regression"]][["s"]] <- NA
       result[["regression"]][["rsq"]] <- 1
@@ -497,7 +493,7 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
       anovaFit <- rbind(anovaFit, errorRow)
       anovaFit$`F value` <- NA # add these empty columns to the saturated design so the anova fit object always has the same format
       anovaFit$`Pr(>F)` <- NA
-      anovaFit <- .addModelHeaderTerms(anovaFit, unlist(covariates))
+      anovaFit <- .addModelHeaderTerms(anovaFit, unlist(covariates), blocks)
 
     }
 
@@ -575,8 +571,8 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
     coefEffects <- .doeCoefficientEffects(regressionFit)
     coefEffectsCoded <- .doeCoefficientEffects(regressionFitCoded)
     if (length(blocks) > 0 && !identical(blocks, "")) {
-      blockNameIndices <- which(termNamesRemoved == blocks) # get the indices of the block variables
-      blockNameIndicesCoded <- which(termNamesRemovedCoded == blocks)
+      blockNameIndices <- which(termNamesRemoved %in% blocks) # get the indices of the block variables
+      blockNameIndicesCoded <- which(termNamesRemovedCoded %in% blocks)
       coefEffects[blockNameIndices] <- NA
       coefEffectsCoded[blockNameIndicesCoded] <- NA
     }
@@ -604,12 +600,13 @@ doeAnalysis <- function(jaspResults, dataset, options, ...) {
     }
     termNamesAliased <- gsub("✻", "", termNamesAliased)
     termNamesAliasedCoded <- gsub("✻", "", termNamesAliasedCoded)
+    # block/point type terms are not aliased, they keep their own names
+    # (this also restores any name mangled by the alias substitution above)
     if (length(blocks) > 0 && !identical(blocks, "")) {
-      blockNameIndices <- which(termNamesRemoved == blocks) # get the indices of the block variables
-      blockNameIndicesCoded <- which(termNamesRemovedCoded == blocks) # get the indices of the block variables in the coded terms
-      blockNamesAliased <- paste0("BLK", 1:length(blockNameIndices))
-      termNamesAliased[blockNameIndices] <- blockNamesAliased
-      termNamesAliasedCoded[blockNameIndicesCoded] <- blockNamesAliased
+      blockNameIndices <- which(termNamesRemoved %in% blocks) # get the indices of the block variables
+      blockNameIndicesCoded <- which(termNamesRemovedCoded %in% blocks) # get the indices of the block variables in the coded terms
+      termNamesAliased[blockNameIndices] <- termNames[blockNameIndices]
+      termNamesAliasedCoded[blockNameIndicesCoded] <- termNamesCoded[blockNameIndicesCoded]
     }
 
     if (length(covariates) > 0 && !identical(covariates, "")) {
@@ -1351,7 +1348,7 @@ get_levels <- function(var, num_levels, dataset) {
   return(compoundDesi)
 }
 
-.addModelHeaderTerms <- function(anovaFit, covariates = "") {
+.addModelHeaderTerms <- function(anovaFit, covariates = "", blocks = "") {
   rownames(anovaFit) <- gsub(" ", "", row.names(anovaFit), fixed = TRUE)
   rownames(anovaFit) <- unname(sapply(rownames(anovaFit), .gsubIdentityFunction)) # remove identity function around squared terms
 
@@ -1372,7 +1369,7 @@ get_levels <- function(var, num_levels, dataset) {
   rownames(totalRow) <- "Total"
 
   # calculate block row
-  blockTermIndex <- which(rownames(anovaFit) == "Block")
+  blockTermIndex <- which(rownames(anovaFit) %in% blocks)
   if (length(blockTermIndex) > 0) {
     anovaFitBlock <- anovaFit[blockTermIndex,]
     rownames(anovaFitBlock) <- sprintf("\u00A0 %s", rownames(anovaFitBlock)) # single indent
@@ -1390,8 +1387,8 @@ get_levels <- function(var, num_levels, dataset) {
 
   # calculate linear row and get all linear terms
   linearTermIndices <- which(!grepl("\\^2|:", rownames(anovaFit[-nrow(anovaFit),])) &
-                               rownames(anovaFit[-nrow(anovaFit),]) != "Block" &
-                               !rownames(anovaFit[-nrow(anovaFit),]) %in% covariates)  # all terms without squared symbol or colon or residuals or Block or covariates
+                               !rownames(anovaFit[-nrow(anovaFit),]) %in% blocks &
+                               !rownames(anovaFit[-nrow(anovaFit),]) %in% covariates)  # all terms without squared symbol or colon or residuals or blocks or covariates
   anovaFitLinear <- anovaFit[linearTermIndices,]
   rownames(anovaFitLinear) <- sprintf("\u00A0 \u00A0 %s", rownames(anovaFitLinear)) # double indent
   linearRow <- data.frame(df = sum(anovaFitLinear$Df), ss = sum(anovaFitLinear$`Sum Sq`), ms = NA, f = NA, p = NA)
@@ -1697,8 +1694,9 @@ get_levels <- function(var, num_levels, dataset) {
     # Do not include intercept, covariates and blocks in pareto plot
     tDf <- tDf[-1, ] # remove intercept
     if (length(blocks) > 0 && !identical(blocks, "")) {
-      tDf <- tDf[!grepl(blocks, tDf$terms),]
-      fac <- if (options[["tableAlias"]]) fac[!grepl("BLK", fac)] else fac[!grepl(blocks, fac)]
+      blocksPattern <- paste(blocks, collapse = "|") # block terms are never aliased, so this matches either way
+      tDf <- tDf[!grepl(blocksPattern, tDf$terms),]
+      fac <- fac[!grepl(blocksPattern, fac)]
     }
     if (length(covariates) > 0 && !identical(covariates, "")) {
       tDf <- tDf[!tDf$terms %in% unlist(covariates), ] # remove the covariate(s)
@@ -1748,8 +1746,9 @@ get_levels <- function(var, num_levels, dataset) {
     # Do not include intercept, covariates and blocks in normal effects plot
     tDf <- tDf[-1, ] # remove intercept
     if (length(blocks) > 0 && !identical(blocks, "")) {
-      tDf <- tDf[!grepl(blocks, tDf$terms),]
-      fac <- if (options[["tableAlias"]]) fac[!grepl("BLK", fac)] else fac[!grepl(blocks, fac)]
+      blocksPattern <- paste(blocks, collapse = "|") # block terms are never aliased, so this matches either way
+      tDf <- tDf[!grepl(blocksPattern, tDf$terms),]
+      fac <- fac[!grepl(blocksPattern, fac)]
     }
     if (length(covariates) > 0 && !identical(covariates, "")) {
       tDf <- tDf[!tDf$terms %in% unlist(covariates), ] # remove the covariate(s)

@@ -79,9 +79,10 @@ Form
 		AssignedVariablesList
 		{
 			name:								"blocksFactorial"
-			singleVariable:						true
-			label:								qsTr("Blocks")
-			allowedColumns:						["nominal"]
+			label:								qsTr("Block/PtType")
+			allowedColumns:						["nominal", "ordinal", "scale"]
+			height:								50 * preferencesModel.uiScale
+			info:								qsTr("Categorical factors, such as a blocking variable or the point type of a generated design, that are entered into the model as main effects only (without any interactions).")
 		}
 	}
 
@@ -137,9 +138,10 @@ Form
 		AssignedVariablesList
 		{
 			name:								"blocksResponseSurface"
-			singleVariable:						true
-			label:								qsTr("Blocks")
-			allowedColumns:						["nominal"]
+			label:								qsTr("Block/PtType")
+			allowedColumns:						["nominal", "ordinal", "scale"]
+			height:								50 * preferencesModel.uiScale
+			info:								qsTr("Categorical factors, such as a blocking variable or the point type of a generated design, that are entered into the model as main effects only (without any interactions).")
 		}
 	}
 
